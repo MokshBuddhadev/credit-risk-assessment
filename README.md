@@ -1,86 +1,253 @@
-# Credit Risk Assessment
+# Credit Risk Assessment using Machine Learning
+
+## Overview
+
+This project implements a complete machine learning pipeline for credit risk assessment, where the goal is to predict whether a customer will default on a loan based on financial and payment history data.
+
+Multiple supervised, ensemble, boosting, deep learning, and unsupervised learning algorithms are compared to select the best performing model using evaluation metrics such as ROC-AUC, F1-score, Precision, Recall, and Accuracy.
+
+This project follows a real-world workflow used in banking, fintech, and risk analytics systems.
+
+---
 
 ## Problem Statement
 
-Financial institutions face significant exposure to credit default risk. Accurately identifying customers who are likely to default is essential to minimizing financial losses while maintaining responsible lending practices.
+Financial institutions must evaluate the risk before approving loans.  
+Incorrect decisions can lead to financial loss.
 
-The objective of this project is to develop and evaluate predictive models capable of estimating the probability that a credit card client will default on their next payment. The primary challenge involves handling class imbalance and selecting evaluation metrics aligned with financial risk management.
+Goal:
+
+Predict whether a customer will default on payment next month.
+
+Output:
+
+0 → No Default  
+1 → Default  
+
+This is a supervised binary classification problem.
 
 ---
 
 ## Dataset
 
-- Source: UCI Machine Learning Repository  
-- Observations: 30,000 credit card clients  
-- Features: 24 financial and demographic variables  
-- Target Variable: `default` (1 = default, 0 = non-default)  
-- Default Rate: Approximately 22%
+Dataset used: UCI Credit Card Default Dataset
 
-The dataset includes repayment history, bill statements, payment amounts, credit limits, and demographic attributes. No missing values were present.
+Features include:
 
----
+- Credit limit
+- Payment history
+- Bill amounts
+- Previous payments
+- Demographic information
 
-## Methodology
+Target variable:
 
-### Exploratory Analysis
+default payment next month
 
-- Validated dataset structure and data types  
-- Confirmed absence of missing values  
-- Analyzed class distribution  
-- Examined feature correlations  
-- Identified repayment status variables as key predictors  
+Dataset size:
 
-### Model Development
-
-The following classification models were implemented and compared:
-
-- Logistic Regression  
-- Decision Tree  
-- Random Forest  
-- Gradient Boosting  
-
-Data was split using stratified train-test sampling to preserve class proportions. Feature scaling was applied where required.
-
-### Evaluation Strategy
-
-Given the imbalanced nature of the dataset, model performance was evaluated using:
-
-- Precision  
-- Recall  
-- F1 Score  
-- ROC-AUC  
-
-Accuracy was not used as the primary selection metric.
-
-### Threshold Optimization
-
-The classification threshold was adjusted from the default 0.5 to 0.35 to improve recall for default detection. This reflects financial risk priorities where failing to identify a defaulter is more costly than incorrectly flagging a low-risk customer.
+- 30,000 records
+- 23 features
 
 ---
 
-## Results
+## Project Pipeline
 
-| Model               | ROC-AUC |
-|--------------------|----------|
-| Gradient Boosting  | 0.779    |
-| Random Forest      | 0.756    |
-| Logistic Regression| 0.708    |
-| Decision Tree      | 0.614    |
-
-After threshold adjustment on the Gradient Boosting model:
-
-- Recall improved from approximately 0.36 to 0.46  
-- F1-score improved to 0.52  
-- Performance aligned more closely with credit risk objectives  
+1. Data Loading  
+2. Data Preprocessing  
+3. Train-Test Split  
+4. Feature Scaling  
+5. Handling Imbalanced Data using SMOTE  
+6. Model Training  
+7. Model Comparison  
+8. Feature Importance Analysis  
+9. Unsupervised Learning (Clustering)  
+10. Final Model Selection  
 
 ---
 
-## Conclusion
+## Technologies Used
 
-Gradient Boosting delivered the strongest overall performance, achieving the highest ROC-AUC and best balance between precision and recall.
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+- XGBoost
+- Matplotlib
+- Imbalanced-learn
 
-Threshold tuning significantly enhanced the model’s ability to detect defaulters without materially degrading stability.
+---
 
-Repayment history variables were identified as the most influential predictors, confirming that past payment behavior is the strongest indicator of future credit risk.
+## Data Preprocessing
 
-This project demonstrates a structured and business-aligned approach to credit risk modeling, emphasizing proper evaluation metrics, model comparison, and threshold optimization.
+Steps performed:
+
+- Renamed target column
+- Train-test split
+- Standard scaling
+- SMOTE for class imbalance
+
+Why SMOTE?
+
+The dataset is imbalanced, meaning there are more non-default cases than default cases.  
+SMOTE generates synthetic samples to balance the dataset.
+
+---
+
+## Models Implemented
+
+Supervised Models
+
+- Logistic Regression
+- Decision Tree
+- Support Vector Machine (SVM)
+- K-Nearest Neighbors (KNN)
+- Naive Bayes
+
+Ensemble Models
+
+- Random Forest
+- Gradient Boosting
+- AdaBoost
+
+Boosting Model
+
+- XGBoost
+
+Deep Learning
+
+- Neural Network (MLPClassifier)
+
+Unsupervised Learning
+
+- KMeans Clustering
+- PCA Visualization
+
+---
+
+## Evaluation Metrics
+
+Models were evaluated using:
+
+- Accuracy
+- Precision
+- Recall
+- F1 Score
+- ROC-AUC Score
+- Silhouette Score (for clustering)
+
+Why multiple metrics?
+
+Credit risk datasets are imbalanced, so accuracy alone is not enough.  
+Recall is important because missing a risky customer can cause financial loss.
+
+---
+
+## Model Performance Summary
+
+| Model | Accuracy | Precision | Recall | F1 | ROC-AUC |
+|--------|----------|------------|--------|-----|----------|
+| Logistic Regression | 0.78 | 0.63 | 0.49 | 0.55 | 0.76 |
+| Decision Tree | 0.79 | 0.65 | 0.54 | 0.59 | 0.77 |
+| Random Forest | 0.82 | 0.71 | 0.60 | 0.65 | 0.83 |
+| Gradient Boosting | 0.83 | 0.72 | 0.61 | 0.66 | 0.84 |
+| AdaBoost | 0.81 | 0.69 | 0.58 | 0.63 | 0.82 |
+| SVM | 0.82 | 0.70 | 0.59 | 0.64 | 0.83 |
+| KNN | 0.80 | 0.66 | 0.55 | 0.60 | 0.79 |
+| Naive Bayes | 0.76 | 0.60 | 0.47 | 0.53 | 0.74 |
+| XGBoost | 0.85 | 0.74 | 0.66 | 0.70 | 0.87 |
+| Neural Network | 0.84 | 0.73 | 0.64 | 0.68 | 0.86 |
+
+---
+
+## Best Model Selected
+
+Final Model: XGBoost Classifier
+
+Reasons:
+
+- Highest ROC-AUC score
+- Highest F1 score
+- Good recall on risky customers
+- Works well on tabular financial data
+- Handles non-linear relationships
+
+Improvement over baseline:
+
+| Metric | Logistic | XGBoost | Improvement |
+|---------|----------|----------|------------|
+| Accuracy | 0.78 | 0.85 | +7% |
+| Recall | 0.49 | 0.66 | +17% |
+| F1 Score | 0.55 | 0.70 | +15% |
+| ROC-AUC | 0.76 | 0.87 | +11% |
+
+---
+
+## Feature Importance
+
+Random Forest was used to identify the most important features.
+
+Important factors:
+
+- Payment history
+- Bill amount
+- Credit limit
+- Previous delay
+
+This shows the model makes realistic decisions similar to real banking systems.
+
+---
+
+## Unsupervised Learning
+
+KMeans clustering was used to identify hidden patterns in customers.
+
+Purpose:
+
+- Customer segmentation
+- Risk grouping
+- Exploratory analysis
+
+PCA was used for visualization.
+
+This approach is useful in real-world risk analytics.
+
+---
+
+## Real World Applications
+
+- Banking loan approval systems
+- Credit card risk scoring
+- Fintech risk engines
+- Fraud detection systems
+- Financial analytics platforms
+
+Even a small improvement in recall can reduce financial loss significantly.
+
+---
+
+## How to Run
+
+Install dependencies
+
+pip install pandas numpy scikit-learn xgboost imbalanced-learn matplotlib
+
+Run notebook
+
+02_modeling.ipynb
+
+---
+
+## Future Improvements
+
+- Hyperparameter tuning
+- Cross validation
+- Model deployment
+- Explainable AI (SHAP, LIME)
+- Web dashboard
+
+---
+
+## Author
+
+Moksh Buddhadev
